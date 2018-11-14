@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store/index'
 import './plugins/element.js'
-import {post,get,del,put} from './config/http'
+import {post,get,del,put} from './request'
 
 Vue.config.productionTip = false
 Vue.prototype.$get=get;

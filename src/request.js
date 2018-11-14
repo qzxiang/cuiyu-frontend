@@ -21,20 +21,20 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(
     response => {
         const res = response.data
-        if (res.code !== 1) {
+        if (res.status !== 1) {
             Message({
                 message: res.message,
                 type: 'error',
                 duration: 5 * 1000
             })
 
-            if (res.code === 401) {
+            if (res.status === 401) {
                 MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
                     confirmButtonText: '重新登录',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    store.dispatch('user/logOut').then(() => {
+                    store.dispatch('user/FedLogOut').then(() => {
                         location.reload()// 为了重新实例化vue-router对象 避免bug
                     })
                 })
@@ -62,7 +62,7 @@ axios.interceptors.response.use(
  * @returns {Promise}
  */
 
-export function get(url,params={}){
+function get(url,params={}){
   return new Promise((resolve,reject) => {
     axios({
       url: url,
@@ -86,7 +86,7 @@ export function get(url,params={}){
  * @returns {Promise}
  */
 
- export function post(url,data = {}){
+ function post(url,data = {}){
    return new Promise((resolve,reject) => {
       axios({
         url: url,
@@ -107,7 +107,7 @@ export function get(url,params={}){
  * @returns {Promise}
  */
 
-export function del(url,data = {}){
+function del(url,data = {}) {
   return new Promise((resolve,reject) => {
     axios.delete(url,data)
       .then(response => {
@@ -125,7 +125,7 @@ export function del(url,data = {}){
  * @returns {Promise}
  */
 
-export function put(url,data = {}){
+function put(url,data = {}){
   return new Promise((resolve,reject) => {
     axios.put(url,data)
          .then(response => {
@@ -135,3 +135,5 @@ export function put(url,data = {}){
          })
   })
 }
+
+export {get,post,put,del}
